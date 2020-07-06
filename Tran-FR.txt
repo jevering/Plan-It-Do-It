@@ -1,0 +1,6 @@
+The system shall provide a text box to specify the task name in 50 characters or less.
+
+The system shall provide capacity for at least 15 current or future tasks and 50 archived tasks. 
+
+The system shall provide a pop-up message with “Task name has not been completed” if a task 
+has not been marked completed in twenty-four hours of being inputted with no deadline.
