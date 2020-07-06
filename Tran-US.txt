@@ -1,0 +1,7 @@
+As a chronic procrastinator, I want a daily list of tasks organized by urgency, so that I can know what to prepare for.
+
+As a parent of two children, I want to be able to categorize my tasks, so that I can easily differentiate between 
+scheduled tasks for each individual child.
+
+As a user who is concerned about the privacy of my tasks, I want to have a way to log-in, so that I can have progress goals 
+without worrying about others discovering what tasks I am working on.
