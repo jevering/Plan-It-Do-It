@@ -1,0 +1,5 @@
+The system shall display each user’s tasks, by decreasing levels of priority based on a “low”, “medium”, “high” priority tier list.
+
+The system shall provide the input of time, in hours and minutes, taken for each task.
+
+The system shall provide a method to mark off completed tasks which were inputted.

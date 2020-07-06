@@ -1,0 +1,5 @@
+As a busy user, I want to be kept accountable and reminded of all of my tasks, so that I know what tasks need to be done.
+
+As a goal oriented user, I want to check off my tasks as they're completed, so that I can have a sense of accomplishment and productivity.
+
+As someone who wishes to exercise more, I want recurring reminders to exercise X number of hours per day, so that I will be better motivated to get out and be physically active on a daily basis.
