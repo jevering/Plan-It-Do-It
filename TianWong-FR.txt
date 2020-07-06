@@ -1,0 +1,15 @@
+The system shall provide a calculation for task urgency (U), which shall be determined by combining its priority (P), entry date (t­start), current date (t), and deadline (tend) into one number by the following equation:
+·         U(P, tstart, tend, t) = P-[(tend-t)/(tend-tstart)]
+·         If there is no deadline, then U(P, tstart , t) = P-(t-tstart)-1
+
+The system shall, when provided a future date and time, relay back to the user any tasks scheduled at that specific date and time.
+
+The system shall provide a mechanism for the user to enter new tasks.
+·         New task entries shall require only a name and
+·         Shall provide the option to specify each of the following:
+    o   Description in 150 characters or less
+    o   Priority (high, medium, or low) - default shall be medium
+    o   Deadline which shall be entered as a date
+    o   Category which shall be manually entered in 25 characters or less
+    o   Recurring frequency (every day, week, month, or year)
+        §  This will be ignored if a deadline has been entered

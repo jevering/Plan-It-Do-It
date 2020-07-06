@@ -1,0 +1,5 @@
+As a detail conscious user, I want to see how much of my time I've spent working and what activities that time has gone towards, so that I can track my improvements and better apply my future efforts.
+
+As a user with bad habits, I want to improve myself by reminding myself daily of good habits to practice instead, so that I can encourage gradual change in my daily choices.
+
+As a user working on a group project, I want to share tasks that are either already completed or need to be completed, with my group members so that I can keep my group members and I accountable for progressing on specific project tasks.
