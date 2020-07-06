@@ -1,0 +1,5 @@
+As a user with time management problems, I want to see how my total work time changes day to day, so that I can consciously adjust my effort on days when I am typically less productive.
+
+As a busy university student, I want to set and view the priority of my projects and assignments, so that I can easily find what’s most important to complete next.
+
+As a user trying to develop a habit, I want to see an encouraging message whenever I complete a task, so that I can feel good about the time I’ve spent working.
