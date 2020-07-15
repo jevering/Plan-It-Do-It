@@ -1,4 +1,4 @@
-/*import java.awt.*;
+import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
@@ -74,4 +74,4 @@ public class AppletExample3 extends JApplet implements ActionListener, Runnable 
 		g.drawString("or Enter a new username to create a new account", paneWidth/2-75, paneHeight/2+15);
 	}
 
-}*/
+}
