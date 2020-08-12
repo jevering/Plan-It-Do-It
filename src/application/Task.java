@@ -34,6 +34,7 @@ public class Task {
 		this.setName(name);
 		this.setDetails(details);
 		this.setPriority(priority);
+		created = LocalDate.now();
 		this.setDeadline(deadline);
 		this.setRepeatPeriod(repeatPeriod);
 		this.setCategory(category);
@@ -46,7 +47,7 @@ public class Task {
 	public void setName(String name) {
 		if (!name.isEmpty()) {
 			this.name = name.substring(0, Math.min(name.length(), TASK_NAME_LENGTH));
-		} else if (this.name.isEmpty()) {
+		} else {
 			this.name = "UndefinedTask";
 		}
 	}
@@ -62,7 +63,8 @@ public class Task {
 	 * and false if it is longer than the buffer. 
 	 */
 	public boolean setDetails(String details) {
-		this.details = details.substring(0, DETAILS_LENGTH);
+		int end = Math.min(details.length(), DETAILS_LENGTH);
+		this.details = details.substring(0, end);
 		if (details.length() <= DETAILS_LENGTH) {
 			return true;
 		} else {
@@ -99,7 +101,6 @@ public class Task {
 	 * @return true if the deadline is after the created date and false otherwise
 	 */
 	public boolean setDeadline(LocalDate deadline) {
-		this.deadline = null;
 		if (deadline != null && deadline.isAfter(created)) {
 			this.deadline = deadline;
 			
@@ -159,7 +160,7 @@ public class Task {
 		if (cat.isEmpty() || cat.length() > CAT_LENGTH) {
 			return false;
 		} else {
-			category = cat.substring(0,CAT_LENGTH);
+			category = cat.substring(0,cat.length());
 			return true;
 		}
 	}
