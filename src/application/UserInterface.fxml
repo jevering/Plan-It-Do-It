@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+
+<VBox minHeight="600.0" minWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox>
+         <children>
+            <MenuButton mnemonicParsing="false" text="History">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Action 1" />
+                <MenuItem mnemonicParsing="false" text="Action 2" />
+              </items>
+            </MenuButton>
+            <Separator HBox.hgrow="ALWAYS" />
+            <TextField promptText="Username" />
+            <Button mnemonicParsing="false" text="Login" />
+         </children>
+      </HBox>
+      <Separator orientation="VERTICAL" prefHeight="25.0" visible="false" />
+      <HBox>
+         <children>
+            <Separator visible="false" HBox.hgrow="ALWAYS" />
+            <VBox>
+               <children>
+                  <HBox>
+                     <children>
+                        <Separator visible="false" HBox.hgrow="ALWAYS" />
+                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" text="New Task" />
+                        <Separator visible="false" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <BorderPane maxWidth="600.0" minHeight="100.0" minWidth="350.0" style="-fx-background-color: GREEN;">
+                     <left>
+                        <Button mnemonicParsing="false" text="Completed" BorderPane.alignment="CENTER" />
+                     </left>
+                     <center>
+                        <Label text="Task Title" BorderPane.alignment="CENTER">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                     </center>
+                     <top>
+                        <HBox BorderPane.alignment="CENTER">
+                           <children>
+                              <Label text="Priority" />
+                              <Separator visible="false" HBox.hgrow="ALWAYS" />
+                              <Label text="Due Date">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Separator visible="false" HBox.hgrow="ALWAYS" />
+                              <Label text="Created" />
+                           </children>
+                           <BorderPane.margin>
+                              <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                           </BorderPane.margin>
+                        </HBox>
+                     </top>
+                     <bottom>
+                        <HBox BorderPane.alignment="CENTER">
+                           <children>
+                              <Button mnemonicParsing="false" text="Edit Task" />
+                              <Separator visible="false" HBox.hgrow="ALWAYS" />
+                              <TextField promptText="Log Hours" />
+                              <Button mnemonicParsing="false" text="Log Hours" />
+                           </children>
+                        </HBox>
+                     </bottom>
+                     <VBox.margin>
+                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                     </VBox.margin>
+                  </BorderPane>
+               </children>
+               <HBox.margin>
+                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+               </HBox.margin>
+            </VBox>
+            <Separator visible="false" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+   </children>
+</VBox>
