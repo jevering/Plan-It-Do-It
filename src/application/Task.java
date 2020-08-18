@@ -18,6 +18,7 @@ public class Task {
 	private LocalDate created;
 	private int repeatPeriod;
 	private String category;
+	private int workHours;
 
 	public Task(String name) {
 		this.setName(name);
@@ -27,6 +28,7 @@ public class Task {
 		created = LocalDate.now();
 		repeatPeriod = -1;
 		category = null;
+		workHours = 0;
 	}
 	
 	public Task(String name, String details, int priority, LocalDate deadline, 
@@ -207,5 +209,25 @@ public class Task {
 		}
 		
 		return (maxDays >= daysPassed);
+	}
+	
+	public boolean addWorkHrs(int newHours) {
+		if (newHours >= 0) {
+			workHours += newHours;
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean setWorkHrs(int totalHrs) {
+		if (totalHrs >= 0) {
+			workHours = totalHrs;
+			return true;
+		}
+		return false;
+	}
+	
+	public int getWorkHrs() {
+		return workHours;
 	}
 }
