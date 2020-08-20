@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ TaskComparator_Test.class, TestTask.class })
+@SuiteClasses({ TaskComparatorTest.class, TaskTest.class, UserTest.class })
 public class AllTests {
 
 }
