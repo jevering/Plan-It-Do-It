@@ -3,19 +3,26 @@
               Any modifications will be overwritten.
               To include a user specific buildfile here, simply create one in the same
               directory with the processing instruction <?eclipse.ant.import?>
-              as the first entry and export the buildfile again. --><project basedir="." default="build" name="Plan it do it">
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="PlanIt_DoIt">
     <property environment="env"/>
+    <property name="ECLIPSE_HOME" value="../../../../../../Applications/Eclipse.app/Contents/Eclipse/"/>
+    <property name="junit.output.dir" value="junit"/>
     <property name="debuglevel" value="source,lines,vars"/>
-    <property name="target" value="8"/>
-    <property name="source" value="8"/>
-    <path id="Plan it do it.classpath">
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
+    <path id="JavaFX SDK.libraryclasspath">
+        <pathelement location="../../../../.p2/pool/plugins/org.eclipse.fx.ide.css.jfx8_2.3.0.201603030809.jar"/>
+    </path>
+    <path id="PlanIt_DoIt.classpath">
         <pathelement location="bin"/>
+        <path refid="JavaFX SDK.libraryclasspath"/>
+        <pathelement location="lib/hamcrest-core-1.3.jar"/>
+        <pathelement location="lib/junit-4.13.jar"/>
     </path>
     <target name="init">
         <mkdir dir="bin"/>
         <copy includeemptydirs="false" todir="bin">
             <fileset dir="src">
-                <exclude name="**/*.launch"/>
                 <exclude name="**/*.java"/>
             </fileset>
         </copy>
@@ -30,7 +37,7 @@
         <echo message="${ant.project.name}: ${ant.file}"/>
         <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
             <src path="src"/>
-            <classpath refid="Plan it do it.classpath"/>
+            <classpath refid="PlanIt_DoIt.classpath"/>
         </javac>
     </target>
     <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
@@ -46,5 +53,54 @@
     <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
         <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
         <antcall target="build"/>
+    </target>
+    <target name="AllTests (4)">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="testing.AllTests" todir="${junit.output.dir}"/>
+            <jvmarg line="-ea"/>
+            <classpath refid="PlanIt_DoIt.classpath"/>
+        </junit>
+    </target>
+    <target name="UserTest">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="testing.UserTest" todir="${junit.output.dir}"/>
+            <jvmarg line="-ea"/>
+            <classpath refid="PlanIt_DoIt.classpath"/>
+        </junit>
+    </target>
+    <target name="TaskTest">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="testing.TaskTest" todir="${junit.output.dir}"/>
+            <jvmarg line="-ea"/>
+            <classpath refid="PlanIt_DoIt.classpath"/>
+        </junit>
+    </target>
+    <target name="TaskComparatorTest">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="testing.TaskComparatorTest" todir="${junit.output.dir}"/>
+            <jvmarg line="-ea"/>
+            <classpath refid="PlanIt_DoIt.classpath"/>
+        </junit>
+    </target>
+    <target name="Main">
+        <java classname="application.Main" failonerror="true" fork="yes">
+            <classpath refid="PlanIt_DoIt.classpath"/>
+        </java>
+    </target>
+    <target name="junitreport">
+        <junitreport todir="${junit.output.dir}">
+            <fileset dir="${junit.output.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${junit.output.dir}"/>
+        </junitreport>
     </target>
 </project>
