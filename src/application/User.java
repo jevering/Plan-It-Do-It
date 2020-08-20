@@ -3,6 +3,8 @@ package application;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.PriorityQueue;
 
@@ -33,8 +35,10 @@ public class User {
 	public User(String name) {
 		this.name = name;
 		activeTasks = new PriorityQueue<Task>(MAX_ACTIVE_SIZE, new TaskComparator());
-		completedTasks = new PriorityQueue<Task>(MAX_COMPLETED_SIZE);
+		completedTasks = new PriorityQueue<Task>(MAX_COMPLETED_SIZE, new TaskComparator().reversed());
 		workHistory = new ArrayList<Integer>(MAX_WORK_SIZE);
+		workHistory.add(0);
+		lastUpdated = LocalDate.now();
 	}
 
 	/**
@@ -159,7 +163,8 @@ public class User {
 		Task task;
 		int index;
 		
-		ArrayList<Integer> workDist = new ArrayList<Integer>(size);
+		ArrayList<Integer> workDist = new ArrayList<Integer>(Arrays.asList(new Integer[size]));
+		Collections.fill(workDist, 0);
 		
 		ArrayList<Task> allTasks = new ArrayList<Task>();
 		allTasks.addAll(activeTasks);
@@ -228,10 +233,12 @@ public class User {
 			int split = getHistSplit(timeFrame);
 			int hours = 0;
 			
-			ArrayList<Integer> desiredHistory = new ArrayList<Integer>(size/split);
+			ArrayList<Integer> desiredHistory = new ArrayList<Integer>(Arrays.asList(new Integer[size/split]));
 			for (int i = 0; i < size/split; i++) {
 				for (int j = 0; j < split; j++) {
-					hours += workHistory.get(split*i + j);
+					if(workHistory.size() > split*i + j) {
+						hours += workHistory.get(split*i + j);
+					}
 				}
 				desiredHistory.set(i, hours);
 				hours = 0;

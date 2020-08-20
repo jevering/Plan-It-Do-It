@@ -9,7 +9,7 @@ import org.junit.Test;
 import application.Task;
 import application.TaskComparator;
 
-public class TaskComparator_Test {
+public class TaskComparatorTest {
 
 	@Test
 	public void testEqPriority() {
