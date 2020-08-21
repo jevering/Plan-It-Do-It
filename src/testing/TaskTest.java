@@ -81,6 +81,7 @@ public class TaskTest {
 		assertEquals(t1.getDeadline(), dueDate.plusDays(1l));
 		
 		assertFalse(t1.setDeadline(dueDate.minusDays(5l)));
+		assertFalse(t1.setDeadline(null));
 		assertEquals(t1.getDeadline(), dueDate.plusDays(1l));
 		
 		Task t2 = new Task("second");
@@ -142,6 +143,7 @@ public class TaskTest {
 
 /*
  * Tests getting and setting active status of Task
+ * False return is currently an unreachable condition
  */
 	@Test
 	public void testIsActive() {
