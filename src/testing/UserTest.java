@@ -150,7 +150,7 @@ public class UserTest {
 		user.addHours(custom2, 0);
 		
 		ArrayList<String> relevant = new ArrayList<>(Arrays.asList("testing", "production", null, "nonexistent"));
-		ArrayList<Integer> workDist = user.getWorkDistribution(relevant);
+		ArrayList<Integer> workDist = (ArrayList<Integer>) user.getWorkDistribution(relevant);
 		assertTrue(workDist.get(0) == 4);
 		assertTrue(workDist.get(1) == 0);
 	}
@@ -186,7 +186,7 @@ public class UserTest {
 		user.addHours(custom1, 9);
 		user.addHours(custom2, 15);
 		user.addHours(custom1, 2);
-		ArrayList<Integer> hist = user.getWorkHistory(User.TF_WEEK);
+		ArrayList<Integer> hist = (ArrayList<Integer>) user.getWorkHistory(User.TF_WEEK);
 		assertEquals(26, (int)hist.get(0));
 	}
 }

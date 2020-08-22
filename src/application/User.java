@@ -166,6 +166,10 @@ public class User {
 		
 		ArrayList<Integer> workDist = new ArrayList<>(size);
 		
+		for (int i = 0; i < size; i++) {
+			workDist.add(0);
+		}
+		
 		ArrayList<Task> allTasks = new ArrayList<>();
 		allTasks.addAll(activeTasks);
 		allTasks.addAll(completedTasks);
@@ -239,7 +243,7 @@ public class User {
 				for (int j = 0; j < split; j++) {
 					hours += workHistory.get(split*i + j);
 				}
-				desiredHistory.add(i, hours);
+				desiredHistory.add(hours);
 				hours = 0;
 			}
 		} 
