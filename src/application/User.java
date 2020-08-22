@@ -35,6 +35,7 @@ public class User {
 		activeTasks = new PriorityQueue<Task>(MAX_ACTIVE_SIZE, new TaskComparator());
 		completedTasks = new PriorityQueue<Task>(MAX_COMPLETED_SIZE);
 		workHistory = new ArrayList<Integer>(MAX_WORK_SIZE);
+		workHistory.add(0,0)
 		lastUpdated = LocalDate.now();
 	}
 
