@@ -1,7 +1,9 @@
 package application;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -12,6 +14,10 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 
 public class Control {
@@ -208,4 +214,51 @@ public class Control {
         dialog.setScene(dialogScene);
         dialog.show();
 	}
+	
+	private void getStats(User user) {
+		float averageTimeHrs = 0;
+		int i = 0, hours = 0;
+		ArrayList<String> categories = (ArrayList<String>) user.getCategories();
+		ArrayList<Integer> workDist = (ArrayList<Integer>) user.getWorkDistribution(categories);
+		Task[] taskList = (Task[]) user.getCompletedTasks().toArray();
+		Stage dialog = new Stage();
+		final CategoryAxis xAxis = new CategoryAxis();
+        final NumberAxis yAxis = new NumberAxis();
+        final BarChart<String,Number> bc = 
+            new BarChart<String,Number>(xAxis,yAxis);
+        bc.setTitle("Tasks Completed");
+        xAxis.setLabel("Category");
+        yAxis.setLabel("Hours Spent");
+        
+		
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(primaryStage);
+        VBox dialogVbox = new VBox(20);
+        for (i = 0; i < user.getCompletedTasks().size(); i++) {
+        	hours += taskList[i].getWorkHrs();
+        	
+        }
+        
+        XYChart.Series series1 = new XYChart.Series();
+        for (i = 0; i < categories.size(); i++) {
+        	series1.getData().add(new XYChart.Data(categories.get(i), workDist.get(i)));
+        	
+        }
+        
+        Label statsLabel = new Label("Statistics on Tasks Completed");
+        statsLabel.setFont(Font.font ("Verdana", 20));
+        
+        TextField averageTime = new TextField();
+        averageTimeHrs = hours / user.getCompletedTasks().size();
+        averageTime.setPromptText("Average Time on Tasks: " + Float.toString(averageTimeHrs));
+        
+        
+        dialogVbox.getChildren().addAll(statsLabel, averageTime);
+        Scene dialogScene = new Scene(dialogVbox, 300, 200);
+        bc.getData().addAll(series1);
+        dialog.setScene(dialogScene);
+        dialog.show();
+		
+	}
+	
 }
