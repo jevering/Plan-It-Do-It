@@ -240,7 +240,7 @@ public class User {
 		if (size != 0 && split != 0) {
 			
 			for (int i = 0; i < size/split; i++) {
-				for (int j = 0; j < split; j++) {
+				for (int j = 0; j < split && split*i+j < workHistory.size(); j++) {
 					hours += workHistory.get(split*i + j);
 				}
 				desiredHistory.add(hours);

@@ -22,7 +22,8 @@ import javafx.scene.text.Text;
 public class Main extends Application {
 	
 	Stage window;
-	Scene scene1, scene2;
+	Scene scene1;
+	Scene scene2;
 	Control controller;
 	
 	@Override
@@ -36,7 +37,7 @@ public class Main extends Application {
 			controller.primaryStage = window;
 					
 			window.setTitle("Plan It Do It");
-			Scene scene2 = new Scene(root,400,400);
+			scene2 = new Scene(root,400,400);
 			
 			GridPane grid = new GridPane();
 			grid.setAlignment(Pos.CENTER);
@@ -44,7 +45,7 @@ public class Main extends Application {
 			grid.setVgap(10);
 			grid.setPadding(new Insets(25, 25, 25, 25));
 
-			Scene scene1 = new Scene(grid, 400, 400);
+			scene1 = new Scene(grid, 400, 400);
 			window.setScene(scene1);
 			Text scenetitle = new Text("Welcome");
 			scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
@@ -72,7 +73,6 @@ public class Main extends Application {
 				}
 				
 			});
-			//btn.setOnAction(e -> window.setScene(scene2));
 			
 			scene2.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			window.setScene(scene1);

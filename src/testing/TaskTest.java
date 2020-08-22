@@ -143,7 +143,7 @@ public class TaskTest {
 		Task temp = new Task("temp", "testing urgency", Task.LOW, dueDate, 3, DEFAULT);
 		assertEquals(Task.LOW - (3d/4d), temp.getUrgency(), 0.01d);
 		Task defaultTemp = new Task("defaultTemp");
-		assertEquals(Task.MEDIUM - (1d/1d), defaultTemp.getUrgency(), 0.01d);
+		assertEquals(Task.MEDIUM - (1d/(0+1d)), defaultTemp.getUrgency(), 0.01d);
 	}
 
 /*
