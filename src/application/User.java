@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.PriorityQueue;
 
 /**
@@ -15,11 +16,13 @@ public class User {
 	private static final int MAX_ACTIVE_SIZE = 15;
 	private static final int MAX_WORK_SIZE = 365;
 	
+	public static final int MAX_NAME_LENGTH = 20;
+	
 	public static final int TF_WEEK = 1;
 	public static final int TF_MONTH = 2;
 	public static final int TF_YEAR = 3;
 	
-	public String name;
+	private String name;
 	private PriorityQueue<Task> activeTasks;
 	private PriorityQueue<Task> completedTasks;
 	private ArrayList<Integer> workHistory;
@@ -31,10 +34,10 @@ public class User {
 	 * @param name is the username of the user
 	 */
 	public User(String name) {
-		this.name = name;
-		activeTasks = new PriorityQueue<Task>(MAX_ACTIVE_SIZE, new TaskComparator());
-		completedTasks = new PriorityQueue<Task>(MAX_COMPLETED_SIZE);
-		workHistory = new ArrayList<Integer>(MAX_WORK_SIZE);
+		this.setName(name);
+		activeTasks = new PriorityQueue<>(MAX_ACTIVE_SIZE, new TaskComparator());
+		completedTasks = new PriorityQueue<>(MAX_COMPLETED_SIZE);
+		workHistory = new ArrayList<>(MAX_WORK_SIZE);
 		workHistory.add(0,0);
 		lastUpdated = LocalDate.now();
 	}
@@ -131,9 +134,9 @@ public class User {
 	 * not repeats
 	 * @return a nonrepeating list of categories to be used for historical analysis.
 	 */
-	public ArrayList<String> getCategories() {
-		ArrayList<String> categories = new ArrayList<String>();
-		ArrayList<Task> allTasks = new ArrayList<Task>();
+	public List<String> getCategories() {
+		ArrayList<String> categories = new ArrayList<>();
+		ArrayList<Task> allTasks = new ArrayList<>();
 		allTasks.addAll(activeTasks);
 		allTasks.addAll(completedTasks);
 		Iterator<Task> tasks = allTasks.iterator();
@@ -156,14 +159,14 @@ public class User {
 	 * @param categories an arraylist of categories for work time analysis
 	 * @return the arraylist of hours worked in each of the categories provided
 	 */
-	public ArrayList<Integer> getWorkDistribution(ArrayList<String> categories) {
+	public List<Integer> getWorkDistribution(List<String> categories) {
 		int size = categories.size();
 		Task task;
 		int index;
 		
-		ArrayList<Integer> workDist = new ArrayList<Integer>(size);
+		ArrayList<Integer> workDist = new ArrayList<>(size);
 		
-		ArrayList<Task> allTasks = new ArrayList<Task>();
+		ArrayList<Task> allTasks = new ArrayList<>();
 		allTasks.addAll(activeTasks);
 		allTasks.addAll(completedTasks);
 		Iterator<Task> tasks = allTasks.iterator();
@@ -223,30 +226,45 @@ public class User {
 	 * @param timeFrame the time frame to be analyzed (TF_WEEK, TF_MONTH, TF_YEAR)
 	 * @return an arraylist of the hours worked over the past timeframe
 	 */
-	public ArrayList<Integer> getWorkHistory(int timeFrame) {
+	public List<Integer> getWorkHistory(int timeFrame) {
+		int size = getHistSize(timeFrame);
+		int split = getHistSplit(timeFrame);
+		int hours = 0;
 		
-		if (timeFrame == TF_WEEK || timeFrame == TF_MONTH || timeFrame == TF_YEAR) {
-			int size = getHistSize(timeFrame);
-			int split = getHistSplit(timeFrame);
-			int hours = 0;
+		ArrayList<Integer> desiredHistory = new ArrayList<>();
+		
+		if (size != 0 && split != 0) {
 			
-			ArrayList<Integer> desiredHistory = new ArrayList<Integer>(size/split);
 			for (int i = 0; i < size/split; i++) {
 				for (int j = 0; j < split; j++) {
 					hours += workHistory.get(split*i + j);
 				}
-				desiredHistory.set(i, hours);
+				desiredHistory.add(i, hours);
 				hours = 0;
 			}
-			return desiredHistory;
 		} 
 		
-		return null;
+		return desiredHistory;
 	}
 
 	public void resort(Task task) {
 		activeTasks.remove(task);
 		activeTasks.add(task);
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		int nameLength = Math.min(name.length(), MAX_NAME_LENGTH);
+		this.name = name.substring(0, nameLength);
 	}
 
 }

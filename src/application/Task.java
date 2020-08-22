@@ -67,11 +67,7 @@ public class Task implements Comparable<Object> {
 	public boolean setDetails(String details) {
 		int end = Math.min(details.length(), DETAILS_LENGTH);
 		this.details = details.substring(0, end);
-		if (details.length() <= DETAILS_LENGTH) {
-			return true;
-		} else {
-			return false;
-		}
+		return (details.length() <= DETAILS_LENGTH);
 	}
 	
 	public int getPriority() {
@@ -162,7 +158,7 @@ public class Task implements Comparable<Object> {
 		if (cat.isEmpty() || cat.length() > CAT_LENGTH) {
 			return false;
 		} else {
-			category = cat.substring(0,cat.length());
+			category = cat;
 			return true;
 		}
 	}
@@ -175,7 +171,9 @@ public class Task implements Comparable<Object> {
 	public double getUrgency() {
 		LocalDate today = LocalDate.now();
 		double urgency = priority;
-		long daysLeft, daysPassed, daysTotal;
+		long daysLeft;
+		long daysPassed;
+		long daysTotal;
 		
 		daysPassed = ChronoUnit.DAYS.between(created, today);
 		if (deadline != null) {
@@ -190,7 +188,9 @@ public class Task implements Comparable<Object> {
 
 	public boolean isActive() {
 		LocalDate today = LocalDate.now();
-		long daysPassed, daysTotal, maxDays;
+		long daysPassed;
+		long daysTotal;
+		long maxDays;
 		
 		daysPassed = ChronoUnit.DAYS.between(created, today);
 		
@@ -231,9 +231,13 @@ public class Task implements Comparable<Object> {
 		return workHours;
 	}
 
+	/* The default comparator for tasks is to assume they're equivalent
+	 * Note: this class has a natural ordering that is inconsistent with equals.
+	 * (non-Javadoc)
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
 	@Override
 	public int compareTo(Object arg0) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 }
