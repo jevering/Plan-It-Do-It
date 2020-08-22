@@ -16,6 +16,7 @@ public class TaskTest {
 	private static final String SECOND = "second";
 	private static final String TEST1 = "test1";
 	private static final String DEFAULT = "default";
+	private static final String NEWCATEGORY = "new Category";
 
 /*
  * Tests getting and setting name attribute of Task
@@ -123,12 +124,12 @@ public class TaskTest {
 	public void testCategory() {
 		Task t1 = new Task(FIRST, TEST1, Task.MEDIUM, dueDate, 30, DEFAULT);
 		assertEquals(DEFAULT, t1.getCategory());
-		assertTrue(t1.setCategory("new Category"));
-		assertEquals("new Category", t1.getCategory());
+		assertTrue(t1.setCategory(NEWCATEGORY));
+		assertEquals(NEWCATEGORY, t1.getCategory());
 		
 		String longCategory = String.join("", Collections.nCopies(17, "a"));
 		assertFalse(t1.setCategory(longCategory));
-		assertEquals("new Category", t1.getCategory());
+		assertEquals(NEWCATEGORY, t1.getCategory());
 		
 		Task t2 = new Task(SECOND);
 		assertNull(t2.getCategory());

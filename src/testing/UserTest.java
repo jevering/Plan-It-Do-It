@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.Test;
 
@@ -22,6 +23,7 @@ public class UserTest {
 	private static final String CUSTOM = "custom";
 	private static final String DEFAULT = "default";
 	private static final String PRODUCTION = "production";
+	private static final String USERNAME = "username";
 	
 	/*
 	 * Tests functionality of adding new task
@@ -29,7 +31,7 @@ public class UserTest {
 	 */
 	@Test
 	public void testAddTasks() {
-		user = new User("Bob");
+		user = new User(USERNAME);
 		assertEquals(user.getActiveTasks().size(), 0);
 		assertEquals(user.getCompletedTasks().size(), 0);
 		
@@ -48,7 +50,7 @@ public class UserTest {
 	 */
 	@Test
 	public void testUpdate() {
-		user = new User("Bob");
+		user = new User(USERNAME);
 		Task custom = new Task(CUSTOM, "N/A", Task.LOW, LocalDate.now().plusDays(-30l), 1, TESTING);
 		user.newTask(custom);
 		assertEquals(1, user.getActiveTasks().size());
@@ -63,7 +65,7 @@ public class UserTest {
 	 */
 	@Test
 	public void testFinishTasks() {
-		user = new User("Alice");
+		user = new User(USERNAME);
 		def = new Task(DEFAULT);
 		Task custom = new Task(CUSTOM, "N/A", Task.LOW, LocalDate.now().plusDays(3l), 1, TESTING);
 		for(int i=0; i < 5; i++) {
@@ -82,7 +84,7 @@ public class UserTest {
 	 */
 	@Test
 	public void testFinishTasksOverflow() {
-		user = new User("Alice");
+		user = new User(USERNAME);
 		def = new Task(DEFAULT);
 		for(int i=0; i < 15; i++) {
 			user.newTask(def);
@@ -105,7 +107,7 @@ public class UserTest {
 	 */
 	@Test
 	public void testWorkHrs() {
-		user = new User("Mallory");
+		user = new User(USERNAME);
 		def = new Task(DEFAULT);
 		assertFalse(user.addHours(def, 2));
 		
@@ -121,7 +123,7 @@ public class UserTest {
 	 */
 	@Test
 	public void testCategories() {
-		user = new User("Alice");
+		user = new User(USERNAME);
 		def = new Task(DEFAULT);
 		Task custom = new Task(CUSTOM, "N/A", Task.LOW, LocalDate.now().plusDays(3l), 1, TESTING);
 		assertTrue(user.getCategories().isEmpty());
@@ -138,7 +140,7 @@ public class UserTest {
 	 */
 	@Test
 	public void testWorkDist() {
-		user = new User("Alice");
+		user = new User(USERNAME);
 		Task custom1 = new Task("custom1", "N/A", Task.LOW, LocalDate.now().plusDays(3l), 1, TESTING);
 		Task custom2 = new Task("custom2", "N/A", Task.LOW, LocalDate.now().plusDays(4l), 2, TESTING);
 		Task custom3 = new Task("custom3", "prod", Task.MEDIUM, LocalDate.now().plusDays(10l), 3, PRODUCTION);
@@ -182,7 +184,7 @@ public class UserTest {
 	 */
 	@Test
 	public void testWorkHist() {
-		user = new User("Alice");
+		user = new User(USERNAME);
 		Task custom1 = new Task("custom1", "N/A", Task.LOW, LocalDate.now().plusDays(3l), 1, TESTING);
 		Task custom2 = new Task("custom3", "prod", Task.MEDIUM, LocalDate.now().plusDays(10l), 3, PRODUCTION);
 		assertTrue(user.getWorkHistory(-1).size() == 0);
@@ -193,5 +195,21 @@ public class UserTest {
 		user.addHours(custom1, 2);
 		ArrayList<Integer> hist = (ArrayList<Integer>) user.getWorkHistory(User.TF_WEEK);
 		assertEquals(26, (int)hist.get(0));
+	}
+	
+	/*
+	 * Tests getting and setting of name attribute
+	 * Covers case of name length > MAX_NAME_LENGTH
+	 */
+	@Test
+	public void testName() {
+		user = new User(USERNAME);
+		assertEquals(USERNAME, user.getName());
+		user.setName("not" + USERNAME);
+		assertEquals("not" + USERNAME, user.getName());
+		
+		String maxsizeName = String.join("", Collections.nCopies(User.MAX_NAME_LENGTH, "a"));
+		user.setName(maxsizeName + "a");
+		assertEquals(maxsizeName, user.getName());
 	}
 }
