@@ -240,14 +240,4 @@ public class Task implements Comparable<Object> {
 	public int compareTo(Object arg0) {
 		return 0;
 	}
-	
-	/* This is to fix a code smell, but the equals method should act the same on a task
-	 * as it does on any object
-	 * (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		return this.equals(obj);
-	}
 }
