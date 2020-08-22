@@ -1,7 +1,211 @@
 package application;
 
+import java.time.LocalDate;
+import java.util.Iterator;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
 public class Control {
+	Stage primaryStage;
+	User user;
+	
+	@FXML TextField usernameField;
+	@FXML Label usernameLabel;
+	@FXML VBox taskListVBox;
+	
+	@FXML
 	public void clickLogin() {
-		System.out.println("doing a login type thing");
+		user = new User(usernameField.getText());
+		usernameLabel.setText(usernameField.getText());
+		usernameField.setPromptText("username");
+		updateTaskList();
+	}
+	
+	@FXML
+	public void clickNewTask() {
+		Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(primaryStage);
+        VBox dialogVbox = new VBox(20);
+        
+        Label newTaskLabel = new Label("New Task");
+        newTaskLabel.setFont(Font.font ("Verdana", 20));
+        TextField newTaskName = new TextField();
+        newTaskName.setPromptText("Task Name");
+        newTaskName.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				createNewTask(newTaskName.getText());
+				dialog.close();
+				updateTaskList();
+			}
+        });
+        Button newTaskButton = new Button("Create");
+        newTaskButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				createNewTask(newTaskName.getText());
+				dialog.close();
+				updateTaskList();
+			}
+        	
+        });
+        dialogVbox.getChildren().addAll(newTaskLabel, newTaskName, newTaskButton);
+        Scene dialogScene = new Scene(dialogVbox, 300, 200);
+        dialog.setScene(dialogScene);
+        dialog.show();
+	}
+	
+	private void createNewTask(String name) {
+		Task task = new Task(name);
+		user.newTask(task);
+	}
+	
+	public void updateTaskList() {
+		user.update();
+		taskListVBox.getChildren().clear();
+		Iterator<Task> tasks = user.getActiveTasks().iterator();
+		while (tasks.hasNext()) {
+			Task task = tasks.next();
+			BorderPane taskPane = new BorderPane();
+			Button finishTask = new Button("Finish Task");
+			finishTask.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent arg0) {
+					user.finishTask(task);
+					updateTaskList();
+				}
+				
+			});
+			Label taskName = new Label(task.getName());
+			Button editTask = new Button("Edit Task");
+			editTask.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent arg0) {
+					editTask(task);
+					updateTaskList();
+				}
+				
+			});
+			
+			
+			taskPane.setLeft(finishTask);
+			taskPane.setCenter(taskName);
+			taskPane.setRight(editTask);
+			taskPane.setPadding(new Insets(8,8,8,8));
+			
+			taskListVBox.getChildren().add(taskPane);
+		}
+	}
+	
+	private void editTask(Task task) {
+		Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(primaryStage);
+        VBox dialogVbox = new VBox(20);
+        
+        Label taskLabel = new Label(task.getName());
+        taskLabel.setFont(Font.font ("Verdana", 20));
+        TextArea description = new TextArea();
+        description.setPromptText("Description...");
+        description.setText(task.getDetails());
+        
+        ToggleGroup group = new ToggleGroup();
+
+        RadioButton pLow = new RadioButton("Priority Low");
+        pLow.setToggleGroup(group);
+        pLow.setSelected(task.getPriority() == Task.LOW);
+
+        RadioButton pMedium = new RadioButton("Priority Medium");
+        pMedium.setToggleGroup(group);
+        pMedium.setSelected(task.getPriority() == Task.MEDIUM);
+         
+        RadioButton pHigh = new RadioButton("Priority High");
+        pHigh.setToggleGroup(group);
+        pHigh.setSelected(task.getPriority() == Task.HIGH);
+        
+        TextField category = new TextField();
+        category.setPromptText("Category");
+        category.setText(task.getCategory());
+        
+        HBox dueDateBox = new HBox();
+        dueDateBox.setPadding(new Insets(2,2,2,2));
+        Label dateLabel = new Label("Deadline");
+        TextField monthField = new TextField();
+        monthField.setPrefWidth(36);
+        monthField.setPromptText("MM");
+        Label slash1 = new Label("/");
+        TextField dayField = new TextField();
+        dayField.setPrefWidth(36);
+        dayField.setPromptText("DD");
+        Label slash2 = new Label("/");
+        TextField yearField = new TextField();
+        yearField.setPrefWidth(48);
+        yearField.setPromptText("YYYY");
+        
+        if (task.getDeadline() != null) {
+            monthField.setText(task.getDeadline().getMonthValue()+"");
+            dayField.setText(task.getDeadline().getDayOfMonth()+"");
+            yearField.setText(task.getDeadline().getYear()+"");
+        }
+        
+        dueDateBox.getChildren().addAll(dateLabel, monthField, slash1, dayField, slash2, yearField);
+        
+        
+        Button edit = new Button("Done");
+        edit.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				if (description.getText() != null) {
+					task.setDetails(description.getText());
+				}
+				
+				if (pLow.isSelected()) {
+					task.setPriority(Task.LOW);
+				} else if (pMedium.isSelected()) {
+					task.setPriority(Task.MEDIUM);
+				} else {
+					task.setPriority(Task.HIGH);
+				}
+				
+				if (category.getText() != null) {
+					task.setCategory(category.getText());
+				}
+				
+				if (monthField.getText() != null && dayField.getText() != null && yearField.getText() != null) {
+					try {
+						int month = Integer.parseInt(monthField.getText());
+						int day = Integer.parseInt(dayField.getText());
+						int year = Integer.parseInt(yearField.getText());
+						LocalDate deadline = LocalDate.of(year, month, day);
+						task.setDeadline(deadline);
+					} catch (Exception e) {
+						// unable to parse the date
+					}
+				}
+				
+				dialog.close();
+				user.resort(task);
+				updateTaskList();
+			}
+        	
+        });
+        dialogVbox.getChildren().addAll(taskLabel, description, pLow, pMedium, pHigh, category, dueDateBox, edit);
+        Scene dialogScene = new Scene(dialogVbox, 300, 600);
+        dialog.setScene(dialogScene);
+        dialog.show();
 	}
 }

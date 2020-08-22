@@ -13,9 +13,9 @@ public class TaskComparator implements Comparator<Task> {
 		double priority2 = task2.getUrgency();
 		
 		if (priority1 > priority2) {
-			return 1;
-		} else if (priority1 < priority2) {
 			return -1;
+		} else if (priority1 < priority2) {
+			return 1;
 		} else {
 			return 0;
 		}

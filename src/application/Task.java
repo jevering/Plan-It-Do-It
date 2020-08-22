@@ -3,7 +3,7 @@ package application;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-public class Task {
+public class Task implements Comparable<Object> {
 	public static final int LOW = 1;
 	public static final int MEDIUM = 2;
 	public static final int HIGH = 3;
@@ -181,9 +181,9 @@ public class Task {
 		if (deadline != null) {
 			daysLeft = ChronoUnit.DAYS.between(today, deadline);
 			daysTotal = ChronoUnit.DAYS.between(created, deadline);
-			urgency -= (((double) daysLeft)/((double) daysTotal));
+			urgency -= (((double) daysLeft)/((double) daysTotal+1));
 		} else {
-			urgency -= (1/((double) daysPassed));
+			urgency -= (1/((double) daysPassed+1));
 		}
 		return urgency;
 	}
@@ -229,5 +229,11 @@ public class Task {
 	
 	public int getWorkHrs() {
 		return workHours;
+	}
+
+	@Override
+	public int compareTo(Object arg0) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

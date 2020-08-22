@@ -1,6 +1,8 @@
 package application;
 	
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -21,13 +23,19 @@ public class Main extends Application {
 	
 	Stage window;
 	Scene scene1, scene2;
+	Control controller;
 	
 	@Override
 	public void start(Stage primaryStage) {
 		window = primaryStage;
 		try {
+			
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("UserInterface.fxml"));
+			Parent root = (Parent)loader.load();
+			controller = (Control)loader.getController();
+			controller.primaryStage = window;
+					
 			window.setTitle("Plan It Do It");
-			Parent root = FXMLLoader.load(getClass().getResource("UserInterface.fxml"));
 			Scene scene2 = new Scene(root,400,400);
 			
 			GridPane grid = new GridPane();
@@ -54,7 +62,17 @@ public class Main extends Application {
 			hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
 			hbBtn.getChildren().add(btn);
 			grid.add(hbBtn, 1, 4);
-			btn.setOnAction(e -> window.setScene(scene2));
+			btn.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent arg0) {
+					window.setScene(scene2);
+					controller.user = new User(userTextField.getText());
+					controller.usernameLabel.setText(userTextField.getText());
+				}
+				
+			});
+			//btn.setOnAction(e -> window.setScene(scene2));
 			
 			scene2.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			window.setScene(scene1);
