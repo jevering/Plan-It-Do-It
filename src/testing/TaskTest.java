@@ -11,7 +11,11 @@ import application.Task;
 
 public class TaskTest {
 	
-	public final LocalDate dueDate = LocalDate.now().plusDays(3l);
+	private final LocalDate dueDate = LocalDate.now().plusDays(3l);
+	private static final String FIRST = "first";
+	private static final String SECOND = "second";
+	private static final String TEST1 = "test1";
+	private static final String DEFAULT = "default";
 
 /*
  * Tests getting and setting name attribute of Task
@@ -19,15 +23,15 @@ public class TaskTest {
  */
 	@Test
 	public void testName() {
-		Task t1 = new Task("first", "test1", Task.MEDIUM, dueDate, 30, "default");
-		assertEquals(t1.getName(), "first");
+		Task t1 = new Task(FIRST, TEST1, Task.MEDIUM, dueDate, 30, DEFAULT);
+		assertEquals(FIRST, t1.getName());
 		t1.setName("new Name");
-		assertEquals(t1.getName(), "new Name");
+		assertEquals("new Name", t1.getName());
 		
-		Task t2 = new Task("second");
-		assertEquals(t2.getName(), "second");
+		Task t2 = new Task(SECOND);
+		assertEquals(SECOND, t2.getName());
 		t2.setName("");
-		assertEquals(t2.getName(), "UndefinedTask");
+		assertEquals("UndefinedTask", t2.getName());
 	}
 
 /*
@@ -37,16 +41,16 @@ public class TaskTest {
  */
 	@Test
 	public void testDetails() {
-		Task t1 = new Task("first", "test1", Task.MEDIUM, dueDate, 30, "default");
-		assertEquals(t1.getDetails(), "test1");
+		Task t1 = new Task(FIRST, TEST1, Task.MEDIUM, dueDate, 30, DEFAULT);
+		assertEquals(TEST1, t1.getDetails());
 		assertTrue(t1.setDetails("new Details"));
-		assertEquals(t1.getDetails(), "new Details");
+		assertEquals("new Details", t1.getDetails());
 
 		String longDetails = String.join("", Collections.nCopies(55, "a"));
 		assertFalse(t1.setDetails(longDetails));
-		assertEquals(t1.getDetails(), String.join("", Collections.nCopies(50, "a")));
+		assertEquals(String.join("", Collections.nCopies(50, "a")), t1.getDetails());
 
-		Task t2 = new Task("second");
+		Task t2 = new Task(SECOND);
 		assertNull(t2.getDetails());
 	}
 
@@ -56,16 +60,16 @@ public class TaskTest {
  */
 	@Test
 	public void testPriority() {
-		Task t1 = new Task("first", "test1", Task.MEDIUM, dueDate, 30, "default");
-		assertEquals(t1.getPriority(), Task.MEDIUM);
+		Task t1 = new Task(FIRST, TEST1, Task.MEDIUM, dueDate, 30, DEFAULT);
+		assertEquals(Task.MEDIUM, t1.getPriority());
 		assertTrue(t1.setPriority(Task.HIGH));
-		assertEquals(t1.getPriority(), Task.HIGH);
+		assertEquals(Task.HIGH, t1.getPriority());
 		
 		assertFalse(t1.setPriority(-55));
-		assertEquals(t1.getPriority(), Task.HIGH);
+		assertEquals(Task.HIGH, t1.getPriority());
 		
-		Task t2 = new Task("second");
-		assertEquals(t2.getPriority(), Task.MEDIUM);
+		Task t2 = new Task(SECOND);
+		assertEquals(Task.MEDIUM, t2.getPriority());
 	}
 
 /*
@@ -75,16 +79,16 @@ public class TaskTest {
  */
 	@Test
 	public void testDeadline() {
-		Task t1 = new Task("first", "test1", Task.MEDIUM, dueDate, 30, "default");
-		assertEquals(t1.getDeadline(), dueDate);
+		Task t1 = new Task(FIRST, TEST1, Task.MEDIUM, dueDate, 30, DEFAULT);
+		assertEquals(dueDate, t1.getDeadline());
 		assertTrue(t1.setDeadline(dueDate.plusDays(1l)));
-		assertEquals(t1.getDeadline(), dueDate.plusDays(1l));
+		assertEquals(dueDate.plusDays(1l), t1.getDeadline());
 		
 		assertFalse(t1.setDeadline(dueDate.minusDays(5l)));
 		assertFalse(t1.setDeadline(null));
-		assertEquals(t1.getDeadline(), dueDate.plusDays(1l));
+		assertEquals(dueDate.plusDays(1l), t1.getDeadline());
 		
-		Task t2 = new Task("second");
+		Task t2 = new Task(SECOND);
 		assertNull(t2.getDeadline());
 	}
 
@@ -95,19 +99,19 @@ public class TaskTest {
  */
 	@Test
 	public void testRepeatPeriod() {
-		Task t1 = new Task("first", "test1", Task.MEDIUM, dueDate, 30, "default");
-		assertEquals(t1.getRepeatPeriod(), 30);
+		Task t1 = new Task(FIRST, TEST1, Task.MEDIUM, dueDate, 30, DEFAULT);
+		assertEquals(30, t1.getRepeatPeriod());
 		assertTrue(t1.setRepeatPeriod(5));
-		assertEquals(t1.getRepeatPeriod(), 5);
+		assertEquals(5, t1.getRepeatPeriod());
 		
 		assertFalse(t1.setRepeatPeriod(-2));
-		assertEquals(t1.getRepeatPeriod(), 5);
+		assertEquals(5, t1.getRepeatPeriod());
 		
-		Task t2 = new Task("second");
-		assertEquals(t2.getRepeatPeriod(), -1);
+		Task t2 = new Task(SECOND);
+		assertEquals(-1, t2.getRepeatPeriod());
 		assertTrue(t2.setRepeatPeriod(2));
-		assertEquals(t2.getRepeatPeriod(), 2);
-		assertEquals(t2.getDeadline(), LocalDate.now().plusDays(2));
+		assertEquals(2, t2.getRepeatPeriod());
+		assertEquals(LocalDate.now().plusDays(2), t2.getDeadline());
 	}
 
 /*
@@ -117,16 +121,16 @@ public class TaskTest {
  */
 	@Test
 	public void testCategory() {
-		Task t1 = new Task("first", "test1", Task.MEDIUM, dueDate, 30, "default");
-		assertEquals(t1.getCategory(), "default");
+		Task t1 = new Task(FIRST, TEST1, Task.MEDIUM, dueDate, 30, DEFAULT);
+		assertEquals(DEFAULT, t1.getCategory());
 		assertTrue(t1.setCategory("new Category"));
-		assertEquals(t1.getCategory(), "new Category");
+		assertEquals("new Category", t1.getCategory());
 		
 		String longCategory = String.join("", Collections.nCopies(17, "a"));
 		assertFalse(t1.setCategory(longCategory));
-		assertEquals(t1.getCategory(), "new Category");
+		assertEquals("new Category", t1.getCategory());
 		
-		Task t2 = new Task("second");
+		Task t2 = new Task(SECOND);
 		assertNull(t2.getCategory());
 	}
 
@@ -135,10 +139,10 @@ public class TaskTest {
  */	
 	@Test
 	public void testUrgency() {
-		Task temp = new Task("temp", "testing urgency", Task.LOW, dueDate, 3, "default");
-		assertEquals(temp.getUrgency(), Task.LOW - 1, 0.01d);
+		Task temp = new Task("temp", "testing urgency", Task.LOW, dueDate, 3, DEFAULT);
+		assertEquals(Task.LOW - (3d/4d), temp.getUrgency(), 0.01d);
 		Task defaultTemp = new Task("defaultTemp");
-		assertEquals(defaultTemp.getUrgency(), Task.MEDIUM - (1d/0d), 0.01d);
+		assertEquals(Task.MEDIUM - (1d/1d), defaultTemp.getUrgency(), 0.01d);
 	}
 
 /*
@@ -147,8 +151,8 @@ public class TaskTest {
  */
 	@Test
 	public void testIsActive() {
-		Task t1 = new Task("first", "test1", Task.MEDIUM, dueDate, 30, "default");
-		Task t2 = new Task("second", "test2", Task.MEDIUM, dueDate, -1, "default");
+		Task t1 = new Task(FIRST, TEST1, Task.MEDIUM, dueDate, 30, DEFAULT);
+		Task t2 = new Task(SECOND, "test2", Task.MEDIUM, dueDate, -1, DEFAULT);
 		Task defaultTemp = new Task("defaultTemp");
 		assertTrue(t1.isActive());
 		assertTrue(t2.isActive());
@@ -161,20 +165,20 @@ public class TaskTest {
  */
 	@Test
 	public void testAddWorkHrs() {
-		Task t1 = new Task("first", "test1", Task.MEDIUM, dueDate, 30, "default");
-		assertEquals(t1.getWorkHrs(), 0);
-		Task t2 = new Task("second");
-		assertEquals(t2.getWorkHrs(), 0);
+		Task t1 = new Task(FIRST, TEST1, Task.MEDIUM, dueDate, 30, DEFAULT);
+		assertEquals(0, t1.getWorkHrs());
+		Task t2 = new Task(SECOND);
+		assertEquals(0, t2.getWorkHrs());
 		assertTrue(t2.setWorkHrs(13));
-		assertEquals(t2.getWorkHrs(), 13);
+		assertEquals(13, t2.getWorkHrs());
 		
 		assertTrue(t2.addWorkHrs(2));
-		assertEquals(t2.getWorkHrs(), 15);
+		assertEquals(15, t2.getWorkHrs());
 		
 		assertFalse(t2.setWorkHrs(-1));
-		assertEquals(t2.getWorkHrs(), 15);
+		assertEquals(15, t2.getWorkHrs());
 		assertFalse(t2.addWorkHrs(-1));
-		assertEquals(t2.getWorkHrs(), 15);
+		assertEquals(15, t2.getWorkHrs());
 	}
 
 }

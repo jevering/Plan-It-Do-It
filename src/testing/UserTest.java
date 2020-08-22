@@ -16,8 +16,12 @@ import application.User;
  * 
  */
 public class UserTest {
-	public User user;
-	public Task def;
+	private User user;
+	private Task def;
+	private static final String TESTING = "testing";
+	private static final String CUSTOM = "custom";
+	private static final String DEFAULT = "default";
+	private static final String PRODUCTION = "production";
 	
 	/*
 	 * Tests functionality of adding new task
@@ -29,7 +33,7 @@ public class UserTest {
 		assertEquals(user.getActiveTasks().size(), 0);
 		assertEquals(user.getCompletedTasks().size(), 0);
 		
-		def = new Task("default");
+		def = new Task(DEFAULT);
 		
 		assertTrue(user.newTask(def));
 		assertTrue(user.newTask(def));
@@ -45,7 +49,7 @@ public class UserTest {
 	@Test
 	public void testUpdate() {
 		user = new User("Bob");
-		Task custom = new Task("custom", "N/A", Task.LOW, LocalDate.now().plusDays(-30l), 1, "testing");
+		Task custom = new Task(CUSTOM, "N/A", Task.LOW, LocalDate.now().plusDays(-30l), 1, TESTING);
 		user.newTask(custom);
 		assertEquals(1, user.getActiveTasks().size());
 		user.update();
@@ -60,8 +64,8 @@ public class UserTest {
 	@Test
 	public void testFinishTasks() {
 		user = new User("Alice");
-		def = new Task("default");
-		Task custom = new Task("custom", "N/A", Task.LOW, LocalDate.now().plusDays(3l), 1, "testing");
+		def = new Task(DEFAULT);
+		Task custom = new Task(CUSTOM, "N/A", Task.LOW, LocalDate.now().plusDays(3l), 1, TESTING);
 		for(int i=0; i < 5; i++) {
 			assertTrue(user.newTask(custom));
 		}
@@ -79,7 +83,7 @@ public class UserTest {
 	@Test
 	public void testFinishTasksOverflow() {
 		user = new User("Alice");
-		def = new Task("default");
+		def = new Task(DEFAULT);
 		for(int i=0; i < 15; i++) {
 			user.newTask(def);
 		}
@@ -102,7 +106,7 @@ public class UserTest {
 	@Test
 	public void testWorkHrs() {
 		user = new User("Mallory");
-		def = new Task("default");
+		def = new Task(DEFAULT);
 		assertFalse(user.addHours(def, 2));
 		
 		user.newTask(def);
@@ -118,14 +122,14 @@ public class UserTest {
 	@Test
 	public void testCategories() {
 		user = new User("Alice");
-		def = new Task("default");
-		Task custom = new Task("custom", "N/A", Task.LOW, LocalDate.now().plusDays(3l), 1, "testing");
+		def = new Task(DEFAULT);
+		Task custom = new Task(CUSTOM, "N/A", Task.LOW, LocalDate.now().plusDays(3l), 1, TESTING);
 		assertTrue(user.getCategories().isEmpty());
 		user.newTask(def);
 		user.newTask(def);
 		user.newTask(custom);
 		user.finishTask(custom);
-		assertEquals(user.getCategories().size(), 2);
+		assertEquals(2, user.getCategories().size());
 	}
 	
 	/*
@@ -135,10 +139,10 @@ public class UserTest {
 	@Test
 	public void testWorkDist() {
 		user = new User("Alice");
-		Task custom1 = new Task("custom1", "N/A", Task.LOW, LocalDate.now().plusDays(3l), 1, "testing");
-		Task custom2 = new Task("custom2", "N/A", Task.LOW, LocalDate.now().plusDays(4l), 2, "testing");
-		Task custom3 = new Task("custom3", "prod", Task.MEDIUM, LocalDate.now().plusDays(10l), 3, "production");
-		def = new Task("default");
+		Task custom1 = new Task("custom1", "N/A", Task.LOW, LocalDate.now().plusDays(3l), 1, TESTING);
+		Task custom2 = new Task("custom2", "N/A", Task.LOW, LocalDate.now().plusDays(4l), 2, TESTING);
+		Task custom3 = new Task("custom3", "prod", Task.MEDIUM, LocalDate.now().plusDays(10l), 3, PRODUCTION);
+		def = new Task(DEFAULT);
 		user.newTask(custom1);
 		user.newTask(custom2);
 		user.newTask(def);
@@ -149,10 +153,12 @@ public class UserTest {
 		user.newTask(custom3);
 		user.addHours(custom2, 0);
 		
-		ArrayList<String> relevant = new ArrayList<>(Arrays.asList("testing", "production", null, "nonexistent"));
+		ArrayList<String> relevant = new ArrayList<>(Arrays.asList(TESTING, PRODUCTION, null, "nonexistent"));
 		ArrayList<Integer> workDist = (ArrayList<Integer>) user.getWorkDistribution(relevant);
 		assertTrue(workDist.get(0) == 4);
 		assertTrue(workDist.get(1) == 0);
+		assertTrue(workDist.get(2) == 15);
+		assertTrue(workDist.get(3) == 0);
 	}
 	
 	/*
@@ -173,14 +179,13 @@ public class UserTest {
 	
 	/*
 	 * Tests retrieval of work history
-	 * 
 	 */
 	@Test
 	public void testWorkHist() {
 		user = new User("Alice");
-		Task custom1 = new Task("custom1", "N/A", Task.LOW, LocalDate.now().plusDays(3l), 1, "testing");
-		Task custom2 = new Task("custom3", "prod", Task.MEDIUM, LocalDate.now().plusDays(10l), 3, "production");
-		assertNull(user.getWorkHistory(-1));
+		Task custom1 = new Task("custom1", "N/A", Task.LOW, LocalDate.now().plusDays(3l), 1, TESTING);
+		Task custom2 = new Task("custom3", "prod", Task.MEDIUM, LocalDate.now().plusDays(10l), 3, PRODUCTION);
+		assertTrue(user.getWorkHistory(-1).size() == 0);
 		user.newTask(custom1);
 		user.newTask(custom2);
 		user.addHours(custom1, 9);
