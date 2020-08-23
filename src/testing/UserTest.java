@@ -8,6 +8,10 @@ import org.junit.Test;
 import application.Task;
 import application.User;
 
+/**
+ * @author Meghan
+ * 
+ */
 public class UserTest {
 	private User user;
 	private Task def;
