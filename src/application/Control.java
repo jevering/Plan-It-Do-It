@@ -1,23 +1,25 @@
 package application;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
+import javafx.scene.chart.*;
+
 import javafx.stage.Stage;
 
 public class Control {
@@ -215,50 +217,70 @@ public class Control {
         dialog.show();
 	}
 	
-	private void getStats(User user) {
-		float averageTimeHrs = 0;
-		int i = 0, hours = 0;
-		ArrayList<String> categories = (ArrayList<String>) user.getCategories();
-		ArrayList<Integer> workDist = (ArrayList<Integer>) user.getWorkDistribution(categories);
-		Task[] taskList = (Task[]) user.getCompletedTasks().toArray();
-		Stage dialog = new Stage();
-		final CategoryAxis xAxis = new CategoryAxis();
-        final NumberAxis yAxis = new NumberAxis();
-        final BarChart<String,Number> bc = 
-            new BarChart<String,Number>(xAxis,yAxis);
-        bc.setTitle("Tasks Completed");
-        xAxis.setLabel("Category");
-        yAxis.setLabel("Hours Spent");
-        
+	/**
+	 * This function provides a bar graph of the amount of tasks completed the past seven days
+	 * The X-Axis is how many days prior, with the max being seven days
+	 * The Y-Axis is the number of tasks completed
+	 */
+	
+	public void getBarGraph() {
+		int i = 0;
+		ArrayList<Integer> workDist = (ArrayList<Integer>) user.getWorkHistory(2);
 		
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner(primaryStage);
-        VBox dialogVbox = new VBox(20);
-        for (i = 0; i < user.getCompletedTasks().size(); i++) {
-        	hours += taskList[i].getWorkHrs();
-        	
+		Stage dialog = new Stage();
+		CategoryAxis xAxis = new CategoryAxis();  
+	      xAxis.setCategories(FXCollections.<String>
+	      observableArrayList(Arrays.asList("Yesterday", "2 Days Ago", "3 Days Ago", "4 Days Ago", "5 Days Ago", "6 Days Ago", "7 Days Ago")));
+	      xAxis.setLabel("category");
+	      
+        NumberAxis yAxis = new NumberAxis();
+        BarChart<String, Number> bc = new BarChart<>(xAxis,yAxis);
+        bc.setTitle("Tasks Completed Over the Past Seven Days");
+        xAxis.setLabel("Past Days");
+        yAxis.setLabel("Tasks Completed");
+        
+        
+        XYChart.Series<String, Number> series1 = new XYChart.Series<>();
+        series1.setName("Past 7 Days");
+        for (i = 0; i < workDist.size(); i++) {
+        	series1.getData().add(new XYChart.Data<>(Integer.toString(i), workDist.get(i)));
         }
         
-        XYChart.Series series1 = new XYChart.Series();
-        for (i = 0; i < categories.size(); i++) {
-        	series1.getData().add(new XYChart.Data(categories.get(i), workDist.get(i)));
-        	
-        }
+        bc.getData().add(series1);
+        VBox vbox = new VBox(bc);
+        Scene scene = new Scene(vbox, 700, 400);
         
-        Label statsLabel = new Label("Statistics on Tasks Completed");
-        statsLabel.setFont(Font.font ("Verdana", 20));
-        
-        TextField averageTime = new TextField();
-        averageTimeHrs = hours / user.getCompletedTasks().size();
-        averageTime.setPromptText("Average Time on Tasks: " + Float.toString(averageTimeHrs));
-        
-        
-        dialogVbox.getChildren().addAll(statsLabel, averageTime);
-        Scene dialogScene = new Scene(dialogVbox, 300, 200);
-        bc.getData().addAll(series1);
-        dialog.setScene(dialogScene);
+        dialog.setScene(scene);
         dialog.show();
 		
 	}
+	
+	/**
+	 * This is just an example of what the pie chart would look like, given more time
+	 * It would show the different categories of the completed tasks and the 
+	 * distribution between them
+	 */
+	public void getPieChart() {
+		
+		ArrayList<Integer> workDist = (ArrayList<Integer>) user.getWorkDistribution(user.getCategories());
+		
+		Stage dialog = new Stage();
+		ObservableList<PieChart.Data> pieChartData =
+                FXCollections.observableArrayList(
+                new PieChart.Data("Homework", 5),
+                new PieChart.Data("Exercise", 10),
+                new PieChart.Data("Get Groceries", 3),
+                new PieChart.Data("Grab Mail", 6));
+        final PieChart chart = new PieChart(pieChartData);
+        chart.setTitle("Task Completed in Different Categories");
+
+
+        Group root = new Group(chart); 
+        Scene scene = new Scene(root, 600, 500);
+        
+        dialog.setScene(scene);
+        dialog.show();
+	}
+	
 	
 }
