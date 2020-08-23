@@ -15,7 +15,7 @@
          <children>
             <MenuButton mnemonicParsing="false" text="History">
               <items>
-                <MenuItem mnemonicParsing="false" onAction="#getStats" text="Work Bar Graph" />
+                <MenuItem mnemonicParsing="false" onAction="#getBarGraph" text="Work Bar Graph" />
                 <MenuItem mnemonicParsing="false" onAction="#getPieChart" text="Work Pie Chart" />
               </items>
             </MenuButton>
