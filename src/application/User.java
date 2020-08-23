@@ -241,7 +241,9 @@ public class User {
 			
 			for (int i = 0; i < size/split; i++) {
 				for (int j = 0; j < split && split*i+j < workHistory.size(); j++) {
-					hours += workHistory.get(split*i + j);
+					if(split*i + j < workHistory.size()) {
+						hours += workHistory.get(split*i + j);
+					}
 				}
 				desiredHistory.add(hours);
 				hours = 0;
