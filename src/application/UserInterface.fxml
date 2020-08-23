@@ -15,8 +15,8 @@
          <children>
             <MenuButton mnemonicParsing="false" text="History">
               <items>
-                <MenuItem mnemonicParsing="false" onAction="#getStats" text="Statistics" />
-                <MenuItem mnemonicParsing="false" text="Action 2" />
+                <MenuItem mnemonicParsing="false" onAction="#getStats" text="Work Bar Graph" />
+                <MenuItem mnemonicParsing="false" onAction="#getPieChart" text="Work Pie Chart" />
               </items>
             </MenuButton>
             <Separator HBox.hgrow="ALWAYS" />
