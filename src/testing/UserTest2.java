@@ -77,10 +77,10 @@ public class UserTest2 {
 		
 		ArrayList<String> relevant = new ArrayList<>(Arrays.asList(TESTING, PRODUCTION, null, "nonexistent"));
 		ArrayList<Integer> workDist = (ArrayList<Integer>) user.getWorkDistribution(relevant);
-		assertTrue(workDist.get(0) == 4);
-		assertTrue(workDist.get(1) == 0);
-		assertTrue(workDist.get(2) == 15);
-		assertTrue(workDist.get(3) == 0);
+		assertEquals(4, (int)workDist.get(0));
+		assertEquals(0, (int)workDist.get(1));
+		assertEquals(15, (int)workDist.get(2));
+		assertEquals(0, (int)workDist.get(3));
 	}
 	
 	/*

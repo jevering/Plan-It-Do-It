@@ -240,4 +240,13 @@ public class Task implements Comparable<Object> {
 	public int compareTo(Object arg0) {
 		return 0;
 	}
+	
+	/*
+	 * Must compare object instances, since no unique ids are given to Tasks
+	 * Comparison is needed for .contains() in lookups of active on complete Tasks
+	 */
+	@Override
+	public boolean equals(Object arg0) {
+		return this == arg0;
+	}
 }

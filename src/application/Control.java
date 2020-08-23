@@ -262,8 +262,7 @@ public class Control {
 	 */
 	public void getPieChart() {
 		
-		ArrayList<Integer> workDist = (ArrayList<Integer>) user.getWorkDistribution(user.getCategories());
-		
+//		ArrayList<Integer> workDist = (ArrayList<Integer>) user.getWorkDistribution(user.getCategories());
 		Stage dialog = new Stage();
 		ObservableList<PieChart.Data> pieChartData =
                 FXCollections.observableArrayList(
