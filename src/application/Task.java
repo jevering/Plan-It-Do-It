@@ -2,6 +2,7 @@ package application;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 
 public class Task implements Comparable<Object> {
 	public static final int LOW = 1;
@@ -248,5 +249,14 @@ public class Task implements Comparable<Object> {
 	@Override
 	public boolean equals(Object arg0) {
 		return this == arg0;
+	}
+	
+	/*
+	 * Assumes no actual use of hashCode()
+	 * Reconsider this implementation if actually using in hash
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(name, details, priority);
 	}
 }
