@@ -12,6 +12,11 @@ import org.junit.Test;
 import application.Task;
 import application.User;
 
+/**
+ * @author Tyler
+ * 
+ */
+
 public class UserTest2 {
 	private User user;
 	private Task def;
