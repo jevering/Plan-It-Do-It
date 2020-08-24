@@ -9,6 +9,10 @@ import org.junit.Test;
 import application.Task;
 import application.TaskComparator;
 
+/**
+ * @author Jerry Everingham
+ *
+ */
 public class TaskComparatorTest {
 	private static final String FIRST = "first";
 	private static final String SECOND = "second";
